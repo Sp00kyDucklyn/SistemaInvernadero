@@ -23,7 +23,6 @@ public class Receptor {
      private static final String QUEUE_NAME="colaDatos";
     public static void main(String[] args) throws IOException {
         ConnectionFactory factory=new ConnectionFactory();
-         LocalDateTime fechaHoraActual = LocalDateTime.now();
         factory.setHost("Localhost");
         try{
             Connection connection= factory.newConnection();
@@ -35,11 +34,14 @@ public class Receptor {
             DeliverCallback deliverCallback= (consumerTag, delivery) ->{
                 String message= new String(delivery.getBody(), "UTF-8");
                 DatosDAO datosDAO = new DatosDAO("localhost", "3306", "Invernadero", "root", "1234");
-                Datos datos = new Datos("2", "Sensor de Humedad", 75.5, 25.3, fechaHoraActual, "MarcaXYZ");
+                Datos datos = new Datos();
                 String[] atributos=message.split(":");
                 datos.setIdSensor(atributos[0]);
-                datos.setTipoSensor(message);
+                datos.setTipoSensor("Sensor");
                 datos.setMedidaHumedad(Double.parseDouble(atributos[1]));
+                datos.setMedidaTemperatura(Double.parseDouble(atributos[2]));
+                datos.setFechaHora(LocalDateTime.now());
+                datos.setMarcaSensor(atributos[3]);
                 datosDAO.agregarDatos(datos);
                 
             };
