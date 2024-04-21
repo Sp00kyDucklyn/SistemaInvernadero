@@ -4,7 +4,8 @@
  */
 package Controlador;
 
-import entidades.Invernadero;
+
+import dominio.Invernadero;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public class ControladorInvernadero {
         
         StringBuilder opciones = new StringBuilder();
         for (Invernadero invernadero : invernaderos) {
-            opciones.append("<option value=\"").append(invernadero.getId_invernadero()).append("\">")
+            opciones.append("<option value=\"").append(invernadero.getIdInvernadero()).append("\">")
                     .append(invernadero.getNombre()).append("</option>");
         }
         

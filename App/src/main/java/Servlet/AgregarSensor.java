@@ -5,12 +5,12 @@
 package Servlet;
 
 
-import entidades.Invernadero;
+import Controlador.ManagerInvernadero;
+import Controlador.ManagerSensores;
+import dominio.Invernadero;
+import dominio.Sensor;
 import jakarta.servlet.ServletException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,26 +24,20 @@ public class AgregarSensor extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException { 
-        String nombre = request.getParameter("nombre");
-        String email = request.getParameter("email");
-        Long rolId = Long.parseLong(request.getParameter("rol"));
+        
+        String clave = request.getParameter("clave_sensor");
+        String marca = request.getParameter("marca");
+        long invernadero = Long.parseLong(request.getParameter("invernadero_id"));
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MiUnidadPersistencia");
-        EntityManager em = emf.createEntityManager();
+        // Crear una nueva instancia de Invernadero con los datos recibidos
+        Sensor sensor = new Sensor(clave, marca,invernadero);
 
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
+        // Crear el EntityManagerFactory y EntityManager
+        ManagerSensores manager = new ManagerSensores();
+        manager.agregarSensor(sensor);
+       
 
-//        Rol rol = em.find(Rol.class, rolId);
-//        Usuario usuario = new Usuario(nombre, email, rol);
-
-//        em.persist(usuario);
-
-        tx.commit();
-
-        em.close();
-        emf.close();
-
+        // Redirigir de vuelta al menú principal
         response.sendRedirect("index.html");
     }
 }

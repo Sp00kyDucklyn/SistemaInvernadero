@@ -4,11 +4,14 @@
  */
 package Controlador;
 
-import entidades.Invernadero;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+
+import dominio.Invernadero;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,54 +19,96 @@ import java.util.List;
  * @author diego
  */
 public class ManagerInvernadero {
-     private EntityManagerFactory emf;
+    private Connection connection;
 
     public ManagerInvernadero() {
-        emf = Persistence.createEntityManagerFactory("MiUnidadPersistencia");
+        try {
+            // Establecer la conexión con la base de datos
+            String url = "jdbc:mysql://localhost:3306/invernadero";
+            String user = "root";
+            String password = "12345";
+            connection = DriverManager.getConnection(url, user, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void close() {
-        emf.close();
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void agregarInvernadero(Invernadero invernadero) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.persist(invernadero);
-        em.getTransaction().commit();
-        em.close();
+        String query = "INSERT INTO invernadero (direccion, nombre) VALUES (?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, invernadero.getDireccion());
+            preparedStatement.setString(2, invernadero.getNombre());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void actualizarInvernadero(Invernadero invernadero) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.merge(invernadero);
-        em.getTransaction().commit();
-        em.close();
+        String query = "UPDATE invernadero SET direccion = ?, nombre = ? WHERE id_invernadero = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, invernadero.getDireccion());
+            preparedStatement.setString(2, invernadero.getNombre());
+            preparedStatement.setLong(3, invernadero.getIdInvernadero());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void eliminarInvernadero(int id) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        Invernadero invernadero = em.find(Invernadero.class, id);
-        if (invernadero != null) {
-            em.remove(invernadero);
+        String query = "DELETE FROM invernadero WHERE id_invernadero = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        em.getTransaction().commit();
-        em.close();
     }
 
     public Invernadero obtenerInvernaderoPorId(int id) {
-        EntityManager em = emf.createEntityManager();
-        Invernadero invernadero = em.find(Invernadero.class, id);
-        em.close();
-        return invernadero;
+        String query = "SELECT * FROM invernadero WHERE id_invernadero = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Invernadero invernadero = new Invernadero();
+                invernadero.setIdInvernadero(resultSet.getLong("id_invernadero"));
+                invernadero.setDireccion(resultSet.getString("direccion"));
+                invernadero.setNombre(resultSet.getString("nombre"));
+                return invernadero;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public List<Invernadero> obtenerTodosLosInvernaderos() {
-        EntityManager em = emf.createEntityManager();
-        List<Invernadero> invernaderos = em.createQuery("SELECT i FROM Invernadero i", Invernadero.class).getResultList();
-        em.close();
+        List<Invernadero> invernaderos = new ArrayList<>();
+        String query = "SELECT * FROM invernadero";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Invernadero invernadero = new Invernadero();
+                invernadero.setIdInvernadero(resultSet.getLong("id_invernadero"));
+                invernadero.setDireccion(resultSet.getString("direccion"));
+                invernadero.setNombre(resultSet.getString("nombre"));
+                invernaderos.add(invernadero);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return invernaderos;
     }
 }

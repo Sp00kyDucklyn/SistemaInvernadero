@@ -4,7 +4,10 @@
  */
 package Servlet;
 
-import entidades.Invernadero;
+
+import Controlador.ControladorInvernadero;
+import Controlador.ManagerInvernadero;
+import dominio.Invernadero;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,10 +15,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 
 /**
  *
@@ -75,22 +74,9 @@ public class AgregarInvernadero extends HttpServlet {
         Invernadero invernadero = new Invernadero(direccion, nombre);
 
         // Crear el EntityManagerFactory y EntityManager
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MiUnidadPersistencia");
-        EntityManager em = emf.createEntityManager();
-
-        // Iniciar una transacción
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-
-        // Persistir el invernadero en la base de datos
-        em.persist(invernadero);
-
-        // Completar la transacción
-        tx.commit();
-
-        // Cerrar el EntityManager y EntityManagerFactory
-        em.close();
-        emf.close();
+        ManagerInvernadero manager = new ManagerInvernadero();
+        manager.agregarInvernadero(invernadero);
+       
 
         // Redirigir de vuelta al menú principal
         response.sendRedirect("index.html");
