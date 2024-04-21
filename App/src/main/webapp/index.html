@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema Invernadero</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      height: 100vh;
+      background-color: #87CEEB; /* Azul cielo */
+    }
+
+    h1 {
+      font-family: Arial, sans-serif;
+      font-size: 48px;
+      color: #333; /* Color de texto */
+      margin-top: 20px;
+      margin-left: 20px; /* Alineación izquierda */
+    }
+
+    .button-container {
+      margin-top: 20px;
+      margin-left: 20px; /* Alineación izquierda */
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .button {
+      margin-bottom: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #fff;
+      border: 2px solid #333;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sistema Invernadeross</h1>
+  <div class="button-container">
+    <button class="button" onclick="location.href='agregar_sensor.jsp'">Agregar Sensores</button>
+    <button class="button" onclick="location.href='paginaAgregarAlarmas.html'">Agregar Alarmas</button>
+    <button class="button" onclick="location.href='paginaAgregarInvernadero.html'">Agregar Invernadero</button>
+  </div>
+</body>
+</html>
