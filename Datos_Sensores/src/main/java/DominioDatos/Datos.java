@@ -93,8 +93,6 @@ public class Datos {
         this.fechaHora = fechaHora;
     }
 
-    
-    
     public String getMarcaSensor() {
         return marcaSensor;
     }

@@ -11,6 +11,14 @@ package com.itson.detector;
 public class Detector {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        
+        InvernaderoDAO pruebaInvernadero = new InvernaderoDAO();
+        SensorDAO pruebaSensor = new SensorDAO();
+        AlarmaDAO pruebaAlarma = new AlarmaDAO();
+        
+        System.out.println(pruebaInvernadero.colsultar());
+        System.out.println(pruebaSensor.colsultar());
+        System.out.println(pruebaAlarma.colsultar());
+        
     }
 }
