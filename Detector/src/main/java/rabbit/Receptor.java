@@ -30,16 +30,9 @@ public class Receptor {
             
             DeliverCallback deliverCallback= (consumerTag, delivery) ->{
                 String message= new String(delivery.getBody(), "UTF-8");
-//                DatosDAO datosDAO = new DatosDAO("localhost", "3306", "Invernadero", "root", "1234");
-//                Datos datos = new Datos();
-//                String[] atributos=message.split(":");
-//                datos.setIdSensor(atributos[0]);
-//                datos.setTipoSensor("Sensor");
-//                datos.setMedidaHumedad(Double.parseDouble(atributos[1]));
-//                datos.setMedidaTemperatura(Double.parseDouble(atributos[2]));
-//                datos.setFechaHora(LocalDateTime.now());
-//                datos.setMarcaSensor(atributos[3]);
-//                datosDAO.agregarDatos(datos);
+                
+                EnviarColaMensajeria colita = new EnviarColaMensajeria();
+                colita.enviarMensajeAlerta(message);
                 
             };
         }catch(Exception e){

@@ -10,40 +10,29 @@ package DominioDetector;
  */
 public class Invernadero {
     
-    private long id; // Identificador único del sensor
-    private String idInvernadero;
+    private long idInvernadero; 
     private String direccion;
     private String nombre;
 
     public Invernadero() {
     }
 
-    public Invernadero(long id, String idInvernadero, String direccion, String nombre) {
-        this.id = id;
+    public Invernadero(long idInvernadero, String direccion, String nombre) {
         this.idInvernadero = idInvernadero;
         this.direccion = direccion;
         this.nombre = nombre;
     }
 
-    public Invernadero(String idInvernadero, String direccion, String nombre) {
-        this.idInvernadero = idInvernadero;
+    public Invernadero(String direccion, String nombre) {
         this.direccion = direccion;
         this.nombre = nombre;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getIdInvernadero() {
+    public long getIdInvernadero() {
         return idInvernadero;
     }
 
-    public void setIdInvernadero(String idInvernadero) {
+    public void setIdInvernadero(long idInvernadero) {
         this.idInvernadero = idInvernadero;
     }
 
@@ -65,7 +54,7 @@ public class Invernadero {
 
     @Override
     public String toString() {
-        return "Invernadero{" + "id=" + id + ", idInvernadero=" + idInvernadero
+        return "Invernadero{" + "idInvernadero=" + idInvernadero
                 + ", direccion=" + direccion + ", nombre=" + nombre + '}';
     }
     

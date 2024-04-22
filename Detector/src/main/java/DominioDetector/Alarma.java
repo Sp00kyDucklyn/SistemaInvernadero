@@ -10,40 +10,29 @@ package DominioDetector;
  */
 public class Alarma {
     
-    private long id; // Identificador único del sensor
-    private String idAlarma;
+    private long idAlarma; // Identificador único del sensor
     private double limite_humedad;
     private double limite_temperatura;
 
     public Alarma() {
     }
 
-    public Alarma(long id, String idAlarma, double limite_humedad, double limite_temperatura) {
-        this.id = id;
+    public Alarma(long idAlarma, double limite_humedad, double limite_temperatura) {
         this.idAlarma = idAlarma;
         this.limite_humedad = limite_humedad;
         this.limite_temperatura = limite_temperatura;
     }
 
-    public Alarma(String idAlarma, double limite_humedad, double limite_temperatura) {
-        this.idAlarma = idAlarma;
+    public Alarma(double limite_humedad, double limite_temperatura) {
         this.limite_humedad = limite_humedad;
         this.limite_temperatura = limite_temperatura;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getIdAlarma() {
+    public long getIdAlarma() {
         return idAlarma;
     }
 
-    public void setIdAlarma(String idAlarma) {
+    public void setIdAlarma(long idAlarma) {
         this.idAlarma = idAlarma;
     }
 
@@ -65,7 +54,7 @@ public class Alarma {
 
     @Override
     public String toString() {
-        return "Alarma{" + "id=" + id + ", idAlarma=" + idAlarma + 
+        return "Alarma{" + "idAlarma=" + idAlarma + 
                 ", limite_humedad=" + limite_humedad + ", limite_temperatura=" 
                 + limite_temperatura + '}';
     }

@@ -34,7 +34,7 @@ public class InvernaderoDAO implements IDetector{
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         Invernadero datos = new Invernadero();
-                        datos.setId(rs.getLong("id_invernadero"));
+                        datos.setIdInvernadero(rs.getLong("id_invernadero"));
                         //datos.setIdInvernadero(rs.getString("id_invernadero"));
                         datos.setDireccion(rs.getString("direccion"));
                         datos.setNombre(rs.getString("nombre"));

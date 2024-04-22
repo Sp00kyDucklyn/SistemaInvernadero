@@ -34,7 +34,7 @@ public class SensorDAO implements IDetector{
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         Sensor datos = new Sensor();
-                        datos.setId(rs.getLong("id_sensor"));
+                        datos.setIdSensor(rs.getLong("id_sensor"));
                         //datos.setIdSensor(rs.getString("id_sensor"));
                         datos.setClave_sensor(rs.getString("clave_sensor"));
                         datos.setMarca(rs.getString("marca"));

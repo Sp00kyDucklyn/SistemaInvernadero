@@ -33,7 +33,7 @@ public class AlarmaDAO implements IDetector{
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         Alarma datos = new Alarma();
-                        datos.setId(rs.getLong("id_alarma"));
+                        datos.setIdAlarma(rs.getLong("id_alarma"));
                         //datos.setIdAlarma(rs.getString("id_alarma"));
                         datos.setLimite_humedad(rs.getDouble("limite_humedad"));
                         datos.setLimite_temperatura(rs.getDouble("limite_temperatura"));

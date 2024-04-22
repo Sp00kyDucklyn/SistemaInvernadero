@@ -12,8 +12,7 @@ import java.time.LocalDateTime;
  */
 public class Sensor {
     
-    private long id; // Identificador único del sensor
-    private String idSensor;
+    private long idSensor;
     private String clave_sensor;
     private String marca;
     private long id_invernadero;
@@ -22,8 +21,7 @@ public class Sensor {
     public Sensor() {
     }
 
-    public Sensor(long id, String idSensor, String clave_sensor, String marca, long id_invernadero, long id_alarma) {
-        this.id = id;
+    public Sensor(long idSensor, String clave_sensor, String marca, long id_invernadero, long id_alarma) {
         this.idSensor = idSensor;
         this.clave_sensor = clave_sensor;
         this.marca = marca;
@@ -31,27 +29,18 @@ public class Sensor {
         this.id_alarma = id_alarma;
     }
     
-    public Sensor(String idSensor, String clave_sensor, String marca, long id_invernadero, long id_alarma) {
-        this.idSensor = idSensor;
+    public Sensor(String clave_sensor, String marca, long id_invernadero, long id_alarma) {
         this.clave_sensor = clave_sensor;
         this.marca = marca;
         this.id_invernadero = id_invernadero;
         this.id_alarma = id_alarma;
     }
     
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-    
-    public String getIdSensor() {
+    public long getIdSensor() {
         return idSensor;
     }
 
-    public void setIdSensor(String idSensor) {
+    public void setIdSensor(long idSensor) {
         this.idSensor = idSensor;
     }
 
@@ -89,7 +78,7 @@ public class Sensor {
 
     @Override
     public String toString() {
-        return "Sensor{" + "id=" + id + ", idSensor=" + idSensor + 
+        return "Sensor{" + " idSensor=" + idSensor + 
                 ", clave_sensor=" + clave_sensor + ", marca=" + marca 
                 + ", id_invernadero=" + id_invernadero + ", id_alarma=" 
                 + id_alarma + '}';
