@@ -61,7 +61,7 @@ public class receptor {
                         + "Nombre del Invernadero: " + nombreInvernadero + "\n"
                         + "Direccion del Invernadero: " + direccionInvernadero;
 
-                EmailSender.sendEmail("marcos.toledo.12m@gmail.com", "APP INVERNADERO", mensajeFormatedado);
+                EmailSender.sendEmail("carmen.hernandez240210@potros.itson.edu.mx", "APP INVERNADERO", mensajeFormatedado);
             };
 
             channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> {

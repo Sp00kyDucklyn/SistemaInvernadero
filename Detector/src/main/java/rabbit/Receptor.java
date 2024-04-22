@@ -4,39 +4,43 @@
  */
 package rabbit;
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.*;
 import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.DeliverCallback;
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 /**
  *
- * @author hoshi
+ * @author diego
  */
 public class Receptor {
 
-  private static final String QUEUE_NAME="colaDatos";
+    private static final String QUEUE_NAME="colaDatos";
+    private static final String ROUTING_KEY="key2"; // Clave de enrutamiento para esta cola
+
     public static void main(String[] args) throws IOException {
         ConnectionFactory factory=new ConnectionFactory();
-        factory.setHost("Localhost");
+        factory.setHost("localhost");
         try{
             Connection connection= factory.newConnection();
             Channel channel=connection.createChannel();
-            
+
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-            System.out.println(" [*] Esperando mensajes en"+ QUEUE_NAME +"Para salir, presion CRTL+C");
-            
+            channel.queueBind(QUEUE_NAME, "colaDatos", ROUTING_KEY); // Vincular la cola al exchange con la clave de enrutamiento
+
+            System.out.println(" [*] Esperando mensajes en "+ QUEUE_NAME +". Para salir, presiona CTRL+C");
+
             DeliverCallback deliverCallback= (consumerTag, delivery) ->{
                 String message= new String(delivery.getBody(), "UTF-8");
-                
+                System.out.println("Llego Mensaje "+message);
                 EnviarColaMensajeria colita = new EnviarColaMensajeria();
-                colita.enviarMensajeAlerta(message);
-                
+                colita.construirMensaje(message);
             };
-        }catch(Exception e){
-            
+
+            // Consumir mensajes de la cola
+            channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> { });
+
+        } catch(Exception e){
+            System.out.println("Exception: " + e.getMessage());
         }
     }
     

@@ -43,10 +43,10 @@ public class Entrada implements Runnable {
                 System.out.println("Mensaje recibido: " + inputLine);
 
                 // Envía el mensaje a la primera cola con clave "clave1"
-                colitas.enviarNotificacionSensor("Clave1: " + inputLine, "clave1");
+                colitas.enviarNotificacionSensor(inputLine, "key1");
 
                 // Envía el mensaje a la segunda cola con clave "clave2"
-                colitas.enviarNotificacionSensor("Clave2: " + inputLine, "clave2");
+                colitas.enviarNotificacionSensor(inputLine, "key2");
             }
 
             //out.close();

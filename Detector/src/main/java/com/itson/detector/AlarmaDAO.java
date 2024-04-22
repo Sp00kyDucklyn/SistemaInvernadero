@@ -21,7 +21,7 @@ public class AlarmaDAO implements IDetector{
     private Conexion conexion;
 
     public AlarmaDAO() {
-        conexion = new Conexion("localhost", "3306", "invernadero", "root", "123456");
+        conexion = new Conexion("localhost", "3306", "invernadero", "root", "12345");
     }
 
     @Override

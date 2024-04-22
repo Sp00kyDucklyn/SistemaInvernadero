@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  * @author hoshi
  */
 public class EnviarColas {
-    private static final String EXCHANGE_NAME = "direct_exchange";
+    private static final String EXCHANGE_NAME = "colaDatos";
     ConnectionFactory factory = new ConnectionFactory();
 
     public EnviarColas() {
@@ -29,15 +29,6 @@ public class EnviarColas {
             // Declara el exchange de tipo "direct"
             channel.exchangeDeclare(EXCHANGE_NAME, "direct");
 
-            // Declara y vincula la primera cola con clave de enrutamiento "clave1"
-            String queueName1 = "colaDatos";
-            channel.queueDeclare(queueName1, false, false, false, null);
-            channel.queueBind(queueName1, EXCHANGE_NAME, "clave1");
-
-            // Declara y vincula la segunda cola con clave de enrutamiento "clave2"
-            String queueName2 = "colaDatos";
-            channel.queueDeclare(queueName2, false, false, false, null);
-            channel.queueBind(queueName2, EXCHANGE_NAME, "clave2");
 
         } catch (IOException | TimeoutException ex) {
             System.out.println("Exception: " + ex.getMessage());

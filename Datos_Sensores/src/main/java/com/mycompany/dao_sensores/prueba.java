@@ -20,7 +20,7 @@ public class prueba {
         LocalDateTime fechaHoraActual = LocalDateTime.now();
          
         // Crear una instancia de DatosDAO con los parámetros de conexión
-        DatosDAO datosDAO = new DatosDAO("localhost", "3306", "Invernadero", "root", "1234");
+        DatosDAO datosDAO = new DatosDAO("localhost", "3306", "Invernadero", "root", "12345");
 
         // Crear datos de prueba
         Datos datos = new Datos("1", "Sensor de Humedad", 75.5, 25.3, fechaHoraActual, "MarcaXYZ");

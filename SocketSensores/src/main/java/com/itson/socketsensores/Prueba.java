@@ -23,11 +23,16 @@ public class Prueba {
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
         
-        Socket socket = new Socket("localhost", 1542);
+        Socket socket = new Socket("localhost", 1544);
          
             // El string que quieres enviar en binario
-            String mensaje = "pitito:tilina";
-
+              String mensaje = "33:opo:111:111";
+//            String mensaje = "ABC123:SensorX:221:221:nombre:direccion";
+//            String mensaje1 = "ABC123:SensorX:233:233";
+//            String mensaje2 = "ABC123:SensorX:444:44";
+//            String mensaje3 = "ABC123:SensorX:233:33";
+//            String mensaje4 = "ABC123:SensorX:55:55";
+//            String mensaje5 = "ABC123:SensorX:66221:6221";
             // Convertir el string a bytes en formato UTF-8
             byte[] bytesMensaje = mensaje.getBytes("UTF-8");
 

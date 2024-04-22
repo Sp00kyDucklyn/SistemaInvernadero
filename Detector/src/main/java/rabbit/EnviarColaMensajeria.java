@@ -62,16 +62,17 @@ public class EnviarColaMensajeria {
         //Compara los datos que llegaron con los datos que están en la base de 
         //la alarma si sobrepasa se envía un message
         for (Sensor sensor : sensores) {
-            if (sensor.getClave_sensor() == valores[0]) {
+            if (sensor.getClave_sensor() .equalsIgnoreCase(valores[0]) ) {
 
                 for (Alarma alarma : alarmas) {
 
                     if (alarma.getIdAlarma() == sensor.getId_alarma()) {
-                          if(alarma.getLimite_humedad() >= 
+                          if(alarma.getLimite_humedad() <= 
                                   Double.parseDouble(valores[2])
-                                  || alarma.getLimite_temperatura() >= 
+                                  || alarma.getLimite_temperatura() <= 
                                   Double.parseDouble(valores[3])){
-                              
+                                  System.out.println(alarma.getLimite_humedad()+":"+valores[2]);
+                                  System.out.println(alarma.getLimite_temperatura()+":"+valores[3]);
                                 for(Invernadero invernadero : invernaderos){
                                   
                                   if(sensor.getId_invernadero() == invernadero.getIdInvernadero()){
