@@ -11,9 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function renderizarDatos(data) {
         const tableBody = document.querySelector('#data-table tbody');
-        tableBody.innerHTML = '';//Sirve para limpiar la tabla
+        tableBody.innerHTML = ''; //Sirve para limpiar la tabla
         data.forEach(row => {
-            console.log(row.id);
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
                 <td>${row.id}</td>
@@ -56,7 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
         });
-
         const temperatureCtx = document.getElementById('temperature-chart').getContext('2d');
         const temperatureChart = new Chart(temperatureCtx, {
             type: 'line',
@@ -83,35 +81,49 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    //Se llama la funcion para obtener los datos de los sensores.
+//Se llama la funcion para obtener los datos de los sensores.
     obtenerDatosSensores();
 
-    function descargarPDF() {
-        // Crear un objeto PDF
-        const pdf = new jsPDF();
+    //Funcion que permite descargar un archivo pdf con los datos de los sensores.
+    function descargarTablaComoPDF() {
 
-        // Agregar título al PDF
-        pdf.text("Datos de Sensores", 10, 10);
+        const tabla = document.getElementById('data-table');
+        html2canvas(tabla).then(canvas => {
+            const pdf = new jsPDF('p', 'pt', 'letter');
+            const imgData = canvas.toDataURL('image/png');
+            const imgWidth = pdf.internal.pageSize.getWidth();
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
 
-        // Agregar tabla al PDF
-        const table = document.getElementById('data-table');
-        pdf.autoTable({html: table});
+            pdf.save("tabla_datos.pdf");
+        });
+    }
+    const btnDescargarPDF = document.querySelector('.btnDescargar');
+    btnDescargarPDF.addEventListener('click', descargarTablaComoPDF);
 
-        // Agregar gráficas al PDF
-        const humidityCanvas = document.getElementById('humidity-chart');
-        const temperatureCanvas = document.getElementById('temperature-chart');
-        const humidityDataURL = humidityCanvas.toDataURL();
-        const temperatureDataURL = temperatureCanvas.toDataURL();
-        pdf.addImage(humidityDataURL, 'PNG', 10, 80, 100, 50);
-        pdf.addImage(temperatureDataURL, 'PNG', 120, 80, 100, 50);
+    //Funcion que permite descargar un archivo pdf con las graficas.
+    function descargarGraficasComoPDF() {
+        const humidityChartCanvas = document.getElementById('humidity-chart');
+        const temperatureChartCanvas = document.getElementById('temperature-chart');
 
-        // Guardar el PDF
-        pdf.save("/Recursos/datos_sensores.pdf");
+        Promise.all([
+            html2canvas(humidityChartCanvas),
+            html2canvas(temperatureChartCanvas)
+        ]).then(([humidityChartCanvas, temperatureChartCanvas]) => {
+            const pdf = new jsPDF('p', 'pt', 'letter');
+            const imgWidth = pdf.internal.pageSize.getWidth();
+            const imgHeight = imgWidth * 0.75;
+            const humidityChartImgData = humidityChartCanvas.toDataURL('image/png');
+            pdf.addImage(humidityChartImgData, 'PNG', 40, 40, imgWidth - 80, imgHeight - 150);
+            const temperatureChartImgData = temperatureChartCanvas.toDataURL('image/png');
+            pdf.addPage();
+            pdf.addImage(temperatureChartImgData, 'PNG', 40, 40, imgWidth - 80, imgHeight - 150);
+            pdf.save("graficas_datos.pdf");
+        });
     }
 
-    // Manejar el evento de clic en el botón de descarga de PDF
-    const downloadPDFButton = document.getElementById('download-pdf-button');
-    downloadPDFButton.addEventListener('click', downloadPDF);
-});
+    const btnDescargarGraficas = document.querySelector('.btnDescargarGraficas');
+    btnDescargarGraficas.addEventListener('click', descargarGraficasComoPDF);
 
+});
 

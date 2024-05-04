@@ -1,4 +1,3 @@
-
 <%@ page import="com.invernadero.fachada.Fachada" %>
 
 
@@ -9,10 +8,13 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Resgistros Sensores</title>
-        <link rel="stylesheet" href="styles.css">
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script>
-        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.js"></script>
+        <script>
+            window.jsPDF = window.jspdf.jsPDF;
+        </script>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -48,7 +50,7 @@
                 background-color: #f2f2f2;
             }
 
-            #download-pdf-button {
+            #btnDescargar {
                 position: fixed;
                 bottom: 20px;
                 right: 20px;
@@ -81,8 +83,10 @@
             <div class="chart-container">
                 <canvas id="temperature-chart"></canvas>
             </div>
-            <button id="download-pdf-button" onclick="descargarPDF()">Descargar PDF</button>
+            <button class="btnDescargar">Descargar PDF</button>
+            <button class="btnDescargarGraficas">Descargar Graficas</button>
         </div>
+
         <script src="js/scriptRegistros.js"></script>
     </body>
 </html>
