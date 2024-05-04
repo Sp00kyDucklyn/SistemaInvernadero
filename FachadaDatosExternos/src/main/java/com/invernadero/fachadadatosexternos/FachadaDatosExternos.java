@@ -11,10 +11,12 @@ import java.util.List;
  */
 public class FachadaDatosExternos implements IFachada{
 
-    DatosDAO datosServicio;
+    DatosDAO datosServicio = null;
     
     public FachadaDatosExternos(){
-        datosServicio = new DatosDAO("localhost", "3307", "Invernadero", "root", "admin");
+        if(datosServicio == null){
+            datosServicio = new DatosDAO("localhost", "3307", "datossensores", "root", "admin");
+        }
     }
     
     @Override
