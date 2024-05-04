@@ -9,5 +9,6 @@ Servlet\AgregarInvernadero.class
 Controlador\ControladorInvernadero.class
 Controlador\ControladorSensores.class
 dominio\Alarma.class
+Servlet\ObtenerDatos.class
 Controlador\ManagerAlarma.class
 Servlet\AgregarAlarma.class

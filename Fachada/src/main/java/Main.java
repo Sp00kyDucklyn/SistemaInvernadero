@@ -22,7 +22,7 @@ public class Main {
         Fachada fachada = new Fachada();
         
         // Crear datos de prueba
-        Datos datos = new Datos("8", "Sensor de ASD", 75.5, 25.3, LocalDateTime.now(), "MarcaXYZ");
+        Datos datos = new Datos("121231", "GAY", 75.5, 25.3, LocalDateTime.now(), "MarcaXYZ");
 //        fachada.agregarDatos(datos);
         
         try {

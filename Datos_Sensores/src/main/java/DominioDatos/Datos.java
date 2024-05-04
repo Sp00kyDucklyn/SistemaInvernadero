@@ -6,6 +6,8 @@ package DominioDatos;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import static java.time.LocalDateTime.now;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -18,7 +20,7 @@ public class Datos {
     private String tipoSensor; // Tipo de sensor (por ejemplo, sensor de humedad o sensor de temperatura)
     private double medidaHumedad; // Medida de humedad capturada por el sensor
     private double medidaTemperatura; // Medida de temperatura capturada por el sensor
-    private LocalDateTime fechaHora; // Fecha y hora en que se capturaron los datos
+    private String fechaHora; // Fecha y hora en que se capturaron los datos
     private String marcaSensor; // Marca del sensor que capturó los datos
 
     public Datos() {
@@ -30,7 +32,7 @@ public class Datos {
         this.tipoSensor = tipoSensor;
         this.medidaHumedad = medidaHumedad;
         this.medidaTemperatura = medidaTemperatura;
-        this.fechaHora = fechaHora;
+        this.setFechaHora(fechaHora);
         this.marcaSensor = marcaSensor;
     }
 
@@ -39,7 +41,7 @@ public class Datos {
         this.tipoSensor = tipoSensor;
         this.medidaHumedad = medidaHumedad;
         this.medidaTemperatura = medidaTemperatura;
-        this.fechaHora = fechaHora;
+        this.setFechaHora(fechaHora);
         this.marcaSensor = marcaSensor;
     }
 
@@ -86,11 +88,15 @@ public class Datos {
     }
 
     public LocalDateTime getFechaHora() {
-        return fechaHora;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        LocalDateTime dateTime = LocalDateTime.parse(fechaHora, formatter);
+        return dateTime;
     }
 
     public void setFechaHora(LocalDateTime fechaHora) {
-        this.fechaHora = fechaHora;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = fechaHora.format(formatter);
+        this.fechaHora = formattedDateTime;
     }
 
     public String getMarcaSensor() {
