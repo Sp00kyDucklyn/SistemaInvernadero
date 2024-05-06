@@ -7,6 +7,7 @@ package com.itson.socketsensores;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.Executor;
@@ -24,21 +25,24 @@ public class SocketSensores {
         ServerSocket socketServer = null;
         Socket sc = null;
         Executor service = Executors.newCachedThreadPool();
-        final int PUERTO = 1544;
+        final int PUERTO = 5672;
 //        System.out.println("tamo activo papi");
         try {
 //            System.out.println("tamo activo papi");
-            socketServer = new ServerSocket(PUERTO);
+            socketServer = new ServerSocket(1544);
             while(true){
                 try {
-                                    System.out.println("tamo activo papi");
+                                    System.out.println("tamo activo papi3");
+                                    System.out.println(socketServer.getInetAddress());
+                                    System.out.println(socketServer.getLocalSocketAddress());
                     //Que se quede esperando a ver qn llega
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(SocketSensores.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                System.out.println("s");
                 sc = socketServer.accept();
-                
+                System.out.println("Llego");
                 //puntacos
                 service.execute(new Entrada (sc));                
                 new Thread().start();  
@@ -46,7 +50,7 @@ public class SocketSensores {
             }
          
         }catch(IOException ex){
-            
+            System.out.println(ex);
         }
 
         

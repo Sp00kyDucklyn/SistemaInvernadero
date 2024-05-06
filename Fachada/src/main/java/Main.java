@@ -32,6 +32,11 @@ public class Main {
             } else {
                 System.out.println("Hubo un problema al insertar los datos.");
             }
+            
+            for (Datos obtenerDato : fachada.obtenerDatos()) {
+                System.out.println(obtenerDato);
+            }
+            
         } catch (Exception e) {
             System.out.println("Error al agregar datos: " + e.getMessage());
         }

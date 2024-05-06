@@ -14,20 +14,25 @@ import java.io.IOException;
  */
 public class Receptor {
 
-    private static final String QUEUE_NAME="colaDatos";
+   private static final String EXCHANGE_NAME="colaDatos";
     private static final String ROUTING_KEY="key2"; // Clave de enrutamiento para esta cola
-
-    public static void main(String[] args) throws IOException {
+     private static final String RABBITMQ_HOST = "rabbitmq";
+    private static final String USERNAME = "admin";
+    private static final String PASSWORD = "password";
+    public static void main(String[] args) throws Exception {
         ConnectionFactory factory=new ConnectionFactory();
         factory.setHost("localhost");
+       
         try{
             Connection connection= factory.newConnection();
             Channel channel=connection.createChannel();
+            channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+            channel.queueDeclare(EXCHANGE_NAME, false, false, false, null);
+            String prueba = channel.queueDeclare().getQueue();
+            channel.queueBind(prueba, EXCHANGE_NAME, ROUTING_KEY);
+            channel.queueBind(EXCHANGE_NAME, "colaDatos", ROUTING_KEY); // Vincular la cola al exchange con la clave de enrutamiento
 
-            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-            channel.queueBind(QUEUE_NAME, "colaDatos", ROUTING_KEY); // Vincular la cola al exchange con la clave de enrutamiento
-
-            System.out.println(" [*] Esperando mensajes en "+ QUEUE_NAME +". Para salir, presiona CTRL+C");
+            System.out.println(" [*] Esperando mensajes en "+ EXCHANGE_NAME +". Para salir, presiona CTRL+C");
 
             DeliverCallback deliverCallback= (consumerTag, delivery) ->{
                 String message= new String(delivery.getBody(), "UTF-8");
@@ -37,10 +42,10 @@ public class Receptor {
             };
 
             // Consumir mensajes de la cola
-            channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> { });
+            channel.basicConsume(EXCHANGE_NAME, true, deliverCallback, consumerTag -> { });
 
         } catch(Exception e){
-            System.out.println("Exception: " + e.getMessage());
+            System.out.println("Exception: " + e);
         }
     }
     

@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.Socket;
 
 /**
@@ -22,7 +24,6 @@ public class Prueba {
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
-        
         Socket socket = new Socket("localhost", 1544);
          
             // El string que quieres enviar en binario
@@ -39,6 +40,7 @@ public class Prueba {
             // Obtener el flujo de salida del socket
             OutputStream outputStream = socket.getOutputStream();
 
+            
             // Enviar los bytes al socket
             outputStream.write(bytesMensaje);
 
