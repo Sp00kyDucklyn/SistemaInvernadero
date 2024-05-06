@@ -18,9 +18,14 @@ import java.time.LocalDateTime;
 public class Receptor {
      private static final String EXCHANGE_NAME="colaDatos";
      private static final String ROUTING_KEY="key1";
+     private static final String RABBITMQ_HOST = "rabbitmq";
+    private static final String USERNAME = "admin";
+    private static final String PASSWORD = "password";
     public static void main(String[] args) throws IOException {
         ConnectionFactory factory=new ConnectionFactory();
-        factory.setHost("localhost");
+        factory.setHost(RABBITMQ_HOST);
+        factory.setUsername(USERNAME);
+        factory.setPassword(PASSWORD);
         try{
             Connection connection= factory.newConnection();
             Channel channel=connection.createChannel();
@@ -47,7 +52,7 @@ public class Receptor {
             };
             channel.basicConsume(prueba, true, deliverCallback, consumerTag -> { });
         }catch(Exception e){
-            
+            System.out.println(e);
         }
     }
 }

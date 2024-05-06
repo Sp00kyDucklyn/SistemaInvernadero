@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +56,7 @@ public class DatosDAO implements IDatos {
                 ps.setString(2, datos.getTipoSensor());
                 ps.setDouble(3, datos.getMedidaHumedad());
                 ps.setDouble(4, datos.getMedidaTemperatura());
-                ps.setTimestamp(5, java.sql.Timestamp.valueOf(datos.getFechaHora()));
+                ps.setTimestamp(5, Timestamp.valueOf(datos.getFechaHora()));
                 ps.setString(6, datos.getMarcaSensor());
                 ps.executeUpdate();
 

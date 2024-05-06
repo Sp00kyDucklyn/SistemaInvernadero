@@ -20,7 +20,7 @@ public class Datos {
     private String tipoSensor; // Tipo de sensor (por ejemplo, sensor de humedad o sensor de temperatura)
     private double medidaHumedad; // Medida de humedad capturada por el sensor
     private double medidaTemperatura; // Medida de temperatura capturada por el sensor
-    private String fechaHora; // Fecha y hora en que se capturaron los datos
+    private LocalDateTime fechaHora; // Fecha y hora en que se capturaron los datos
     private String marcaSensor; // Marca del sensor que capturó los datos
 
     public Datos() {
@@ -32,7 +32,7 @@ public class Datos {
         this.tipoSensor = tipoSensor;
         this.medidaHumedad = medidaHumedad;
         this.medidaTemperatura = medidaTemperatura;
-        this.setFechaHora(fechaHora);
+        this.fechaHora=fechaHora;
         this.marcaSensor = marcaSensor;
     }
 
@@ -41,7 +41,7 @@ public class Datos {
         this.tipoSensor = tipoSensor;
         this.medidaHumedad = medidaHumedad;
         this.medidaTemperatura = medidaTemperatura;
-        this.setFechaHora(fechaHora);
+          this.fechaHora=fechaHora;
         this.marcaSensor = marcaSensor;
     }
 
@@ -88,16 +88,15 @@ public class Datos {
     }
 
     public LocalDateTime getFechaHora() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        LocalDateTime dateTime = LocalDateTime.parse(fechaHora, formatter);
-        return dateTime;
+     
+        return fechaHora;
     }
 
     public void setFechaHora(LocalDateTime fechaHora) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDateTime = fechaHora.format(formatter);
-        this.fechaHora = formattedDateTime;
+        
+        this.fechaHora = fechaHora;
     }
+    
 
     public String getMarcaSensor() {
         return marcaSensor;

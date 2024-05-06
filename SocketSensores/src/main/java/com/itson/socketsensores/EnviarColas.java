@@ -17,27 +17,35 @@ import java.util.logging.Logger;
  * @author hoshi
  */
 public class EnviarColas {
+
     private static final String EXCHANGE_NAME = "colaDatos";
     ConnectionFactory factory = new ConnectionFactory();
-
+    private static final String RABBITMQ_HOST = "rabbitmq";
+    private static final String USERNAME = "admin";
+    private static final String PASSWORD = "password";
     public EnviarColas() {
-        factory.setHost("localhost");
+        factory.setHost(RABBITMQ_HOST);
+        factory.setUsername(USERNAME);
+        factory.setPassword(PASSWORD);
+        try {
+            
+        Connection connection = factory.newConnection();
+        Channel channel = connection.createChannel();
 
-        try (Connection connection = factory.newConnection();
-             Channel channel = connection.createChannel()) {
+        // Declara el exchange de tipo "direct"
+        channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
 
-            // Declara el exchange de tipo "direct"
-            channel.exchangeDeclare(EXCHANGE_NAME, "direct");
-
-
-        } catch (IOException | TimeoutException ex) {
-            System.out.println("Exception: " + ex.getMessage());
-        }
+        // Cerrar el canal y la conexión
+        channel.close();
+        connection.close();
+    } catch (IOException | TimeoutException ex) {
+        System.out.println("Excepción al conectar con RabbitMQ: " + ex.getMessage());
+        ex.printStackTrace(); // Imprime la traza de la excepción para obtener más detalles
+    }
     }
 
     public void enviarNotificacionSensor(String compra, String routingKey) {
-        try (Connection connection = factory.newConnection();
-             Channel channel = connection.createChannel()) {
+        try (Connection connection = factory.newConnection(); Channel channel = connection.createChannel()) {
 
             // Publica el mensaje en el exchange con la clave de enrutamiento adecuada
             channel.basicPublish(EXCHANGE_NAME, routingKey, null, compra.getBytes());
@@ -48,8 +56,6 @@ public class EnviarColas {
         }
     }
 }
-
-
 
 //    public EnviarColas() {
 //        ConnectionFactory factory = new ConnectionFactory();
@@ -65,9 +71,8 @@ public class EnviarColas {
 //            Logger.getLogger(EnviarColas.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //    }
-
-    //* Investigar si se puede envíar a dos colas
-    //al mismo tiempo (detector y datos sensores)
+//* Investigar si se puede envíar a dos colas
+//al mismo tiempo (detector y datos sensores)
 //    public void enviarNotificacionSensor(String compra) {
 //
 //        try {
@@ -82,5 +87,4 @@ public class EnviarColas {
 //
 //        }
 //    }
-
 

@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  socket-sensores:
+    image: socketsensores
+    ports:
+      - "1544:1544"
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - rabbitmq
+  Datos_Sensores:
+    image: datossensores
+    ports:
+      - "1534:1534"
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - rabbitmq
+  rabbitmq:
+    image: rabbitmq:latest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=password

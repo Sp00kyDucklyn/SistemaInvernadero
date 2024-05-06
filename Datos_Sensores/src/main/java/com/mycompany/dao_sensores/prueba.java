@@ -6,6 +6,7 @@ package com.mycompany.dao_sensores;
 
 import DominioDatos.Datos;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 
@@ -18,13 +19,13 @@ public class prueba {
     public static void main(String[] args) {
         
         LocalDateTime fechaHoraActual = LocalDateTime.now();
-         
+        Timestamp timestamp = Timestamp.valueOf(fechaHoraActual);
         // Crear una instancia de DatosDAO con los parámetros de conexión
-        DatosDAO datosDAO = new DatosDAO("localhost", "3306", "Invernadero", "root", "12345");
+        DatosDAO datosDAO = new DatosDAO("localhost", "3306", "DatosSensores", "root", "12345");
 
         // Crear datos de prueba
         Datos datos = new Datos("1", "Sensor de Humedad", 75.5, 25.3, fechaHoraActual, "MarcaXYZ");
-
+        
         // Probar el método agregarDatos()
         try {
             Datos datosInsertados = datosDAO.agregarDatos(datos);
