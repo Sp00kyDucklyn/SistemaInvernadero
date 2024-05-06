@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  * @author oscar
  */
 public class Receptor {
-     private static final String QUEUE_NAME="colaDatos";
+     private static final String EXCHANGE_NAME="colaDatos";
      private static final String ROUTING_KEY="key1";
     public static void main(String[] args) throws IOException {
         ConnectionFactory factory=new ConnectionFactory();
@@ -24,10 +24,10 @@ public class Receptor {
         try{
             Connection connection= factory.newConnection();
             Channel channel=connection.createChannel();
-            
-            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-            channel.queueBind(QUEUE_NAME, "colaDatos", ROUTING_KEY);
-            System.out.println(" [*] Esperando mensajes en"+ QUEUE_NAME +"Para salir, presion CRTL+C");
+            channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+            String prueba = channel.queueDeclare().getQueue();
+            channel.queueBind(prueba, EXCHANGE_NAME, ROUTING_KEY);
+            System.out.println(" [*] Esperando mensajes en"+ EXCHANGE_NAME +"Para salir, presion CRTL+C");
             
             DeliverCallback deliverCallback= (consumerTag, delivery) ->{
                 
@@ -45,7 +45,7 @@ public class Receptor {
                 datosDAO.agregarDatos(datos);
                 
             };
-            channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> { });
+            channel.basicConsume(prueba, true, deliverCallback, consumerTag -> { });
         }catch(Exception e){
             
         }
