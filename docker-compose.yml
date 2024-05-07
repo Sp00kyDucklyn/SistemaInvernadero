@@ -7,11 +7,6 @@ services:
       - "1544:1544"
     environment:
       - RABBITMQ_HOST=rabbitmq
-      - MYSQL_HOST=mysql
-      - MYSQL_PORT=3305
-      - MYSQL_DATABASE=DatosSensores
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=12345
     depends_on:
       - rabbitmq
       - mysql
