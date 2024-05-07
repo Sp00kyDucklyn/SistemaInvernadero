@@ -7,9 +7,14 @@ services:
       - "1544:1544"
     environment:
       - RABBITMQ_HOST=rabbitmq
-      - MYSQL_HOST=127.0.0.1
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3305
+      - MYSQL_DATABASE=DatosSensores
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=12345
     depends_on:
       - rabbitmq
+      - mysql
     networks:
       - my_network
 
@@ -19,9 +24,14 @@ services:
       - "1534:1534"
     environment:
       - RABBITMQ_HOST=rabbitmq
-      - MYSQL_HOST=127.0.0.1
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3305
+      - MYSQL_DATABASE=DatosSensores
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=12345
     depends_on:
       - rabbitmq
+      - mysql
     networks:
       - my_network
 
@@ -33,6 +43,16 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=password
+    networks:
+      - my_network
+
+  mysql:
+    image: mysql:latest
+    ports:
+      - "3305:3305"
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345
+      - MYSQL_DATABASE=DatosSensores
     networks:
       - my_network
 
