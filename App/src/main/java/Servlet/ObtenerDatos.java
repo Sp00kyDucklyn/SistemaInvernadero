@@ -5,14 +5,22 @@
 package Servlet;
 
 import DominioDatos.Datos;
-import com.google.gson.Gson;
 import com.invernadero.fachada.Fachada;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
@@ -24,7 +32,25 @@ import java.util.List;
 @WebServlet(name = "ObtenerDatos", urlPatterns = {"/ObtenerDatos"})
 public class ObtenerDatos extends HttpServlet {
 
-    Gson gson = new Gson();
+    private Gson gson = new GsonBuilder()
+        .registerTypeAdapter(LocalDateTime.class, new TypeAdapter<LocalDateTime>() {
+            private final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            @Override
+            public void write(JsonWriter out, LocalDateTime value) throws IOException {
+                if (value == null) {
+                    out.nullValue();
+                } else {
+                    out.value(value.format(formatter));
+                }
+            }
+
+            @Override
+            public LocalDateTime read(JsonReader in) throws IOException {
+                return LocalDateTime.parse(in.nextString(), formatter);
+            }
+        })
+        .create();
     Fachada fachada = new Fachada();
     
     @Override

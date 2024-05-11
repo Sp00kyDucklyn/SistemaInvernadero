@@ -1,5 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="entidades.Invernadero" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List" %>
 <%@page import="Controlador.ControladorSensores"%>

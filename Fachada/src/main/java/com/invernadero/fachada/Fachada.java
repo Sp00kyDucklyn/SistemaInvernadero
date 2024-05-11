@@ -17,7 +17,7 @@ public class Fachada implements IFachada{
     
     public Fachada(){
         if(datosServicio == null){
-            datosServicio = new DatosDAO("localhost", "3304", "datossensores", "root", "12345");
+            datosServicio = new DatosDAO("localhost", "3306", "datossensores", "root", "12345");
         }
     }
     
