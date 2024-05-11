@@ -30,7 +30,6 @@ public class ObtenerDatos extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println(fachada.obtenerDatos().size());
         List<Datos> sensores = fachada.obtenerDatos();
         String jsonSensores = gson.toJson(sensores);
         response.setContentType(jsonSensores);
