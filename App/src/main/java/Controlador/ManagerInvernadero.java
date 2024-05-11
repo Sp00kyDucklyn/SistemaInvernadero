@@ -44,6 +44,7 @@ public class ManagerInvernadero {
     }
 
     public void agregarInvernadero(Invernadero invernadero) {
+        
         String query = "INSERT INTO invernadero (direccion, nombre) VALUES (?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, invernadero.getDireccion());

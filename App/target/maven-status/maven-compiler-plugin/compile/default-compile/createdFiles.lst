@@ -1,6 +1,8 @@
 Controlador\ManagerSensores.class
 Controlador\ManagerInvernadero.class
+Servlet\ObtenerDatosExternos.class
 com\mycompany\app\resources\JakartaEE91Resource.class
+Servlet\ObtenerDatos$1.class
 dominio\Invernadero.class
 dominio\Sensor.class
 Servlet\AgregarSensor.class

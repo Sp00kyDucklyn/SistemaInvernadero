@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManagerSensores {
+
     private Connection connection;
 
     public ManagerSensores() {
@@ -28,8 +29,10 @@ public class ManagerSensores {
             String password = "12345";
             connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
+            System.out.println("dio error");
             e.printStackTrace();
         }
+        System.out.println("Conectado con exito");
     }
 
     public void close() {
@@ -88,10 +91,9 @@ public class ManagerSensores {
                 sensor.setIdSensor(resultSet.getLong("id_sensor"));
                 sensor.setClaveSensor(resultSet.getString("clave_sensor"));
                 sensor.setMarca(resultSet.getString("marca"));
-                
+
                 // Aquí deberías obtener el invernadero y la alarma asociados al sensor desde la base de datos
                 // y configurarlos en el objeto sensor antes de devolverlo.
-                
                 return sensor;
             }
         } catch (SQLException e) {
@@ -101,24 +103,26 @@ public class ManagerSensores {
     }
 
     public List<Sensor> obtenerTodosLosSensores() {
+
         List<Sensor> sensores = new ArrayList<>();
         String query = "SELECT * FROM sensor";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                Sensor sensor = new Sensor();
-                sensor.setIdSensor(resultSet.getLong("id_sensor"));
-                sensor.setClaveSensor(resultSet.getString("clave_sensor"));
-                sensor.setMarca(resultSet.getString("marca"));
-                
-                // Aquí deberías obtener el invernadero y la alarma asociados al sensor desde la base de datos
-                // y configurarlos en el objeto sensor antes de añadirlo a la lista.
-                
-                sensores.add(sensor);
+     
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    Sensor sensor = new Sensor();
+                    sensor.setIdSensor(resultSet.getLong("id_sensor"));
+                    sensor.setClaveSensor(resultSet.getString("clave_sensor"));
+                    sensor.setMarca(resultSet.getString("marca"));
+
+                    // Aquí deberías obtener el invernadero y la alarma asociados al sensor desde la base de datos
+                    // y configurarlos en el objeto sensor antes de añadirlo a la lista.
+                    sensores.add(sensor);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        
         return sensores;
     }
 }
