@@ -16,7 +16,6 @@ public class ControladorInvernadero {
     public String getOpcionesInvernaderos() {
         ManagerInvernadero manager = new ManagerInvernadero();
         List<Invernadero> invernaderos = manager.obtenerTodosLosInvernaderos();
-        manager.close();
         
         StringBuilder opciones = new StringBuilder();
         for (Invernadero invernadero : invernaderos) {

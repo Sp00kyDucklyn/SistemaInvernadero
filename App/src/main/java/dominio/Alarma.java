@@ -16,6 +16,12 @@ public class Alarma {
     public Alarma() {
     }
 
+    public Alarma(long idAlarma, double limiteHumedad, double limiteTemperatura) {
+        this.idAlarma = idAlarma;
+        this.limiteHumedad = limiteHumedad;
+        this.limiteTemperatura = limiteTemperatura;
+    }
+
     public Alarma(double limiteHumedad, double limiteTemperatura) {
         this.limiteHumedad = limiteHumedad;
         this.limiteTemperatura = limiteTemperatura;

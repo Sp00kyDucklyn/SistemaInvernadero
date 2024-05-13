@@ -19,34 +19,24 @@ import java.util.List;
  * @author diego
  */
 public class ManagerInvernadero {
-    private Connection connection;
+    private String url = "jdbc:mysql://mysql:3306/invernadero";
+    private String user = "root";
+    private String password = "12345";
+   
 
-    public ManagerInvernadero() {
+    private Connection getConnection() throws SQLException {
         try {
-            // Establecer la conexión con la base de datos
-            String url = "jdbc:mysql://localhost:3306/invernadero";
-            String user = "root";
-            String password = "12345";
-            connection = DriverManager.getConnection(url, user, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("Error al cargar el driver de MySQL: " + e.getMessage());
+            return null;
         }
+        return DriverManager.getConnection(url, user, password);
     }
-
-    public void close() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void agregarInvernadero(Invernadero invernadero) {
-        
         String query = "INSERT INTO invernadero (direccion, nombre) VALUES (?, ?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, invernadero.getDireccion());
             preparedStatement.setString(2, invernadero.getNombre());
             preparedStatement.executeUpdate();
@@ -54,10 +44,11 @@ public class ManagerInvernadero {
             e.printStackTrace();
         }
     }
-
+    
     public void actualizarInvernadero(Invernadero invernadero) {
         String query = "UPDATE invernadero SET direccion = ?, nombre = ? WHERE id_invernadero = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, invernadero.getDireccion());
             preparedStatement.setString(2, invernadero.getNombre());
             preparedStatement.setLong(3, invernadero.getIdInvernadero());
@@ -66,11 +57,24 @@ public class ManagerInvernadero {
             e.printStackTrace();
         }
     }
-
+    public boolean existenInvernaderos() {
+        String query = "SELECT COUNT(*) AS total FROM invernadero";
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                return resultSet.getInt("total") > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     public void eliminarInvernadero(int id) {
         String query = "DELETE FROM invernadero WHERE id_invernadero = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setLong(1, id);
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,8 +83,9 @@ public class ManagerInvernadero {
 
     public Invernadero obtenerInvernaderoPorId(int id) {
         String query = "SELECT * FROM invernadero WHERE id_invernadero = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setLong(1, id);
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 Invernadero invernadero = new Invernadero();
@@ -98,7 +103,8 @@ public class ManagerInvernadero {
     public List<Invernadero> obtenerTodosLosInvernaderos() {
         List<Invernadero> invernaderos = new ArrayList<>();
         String query = "SELECT * FROM invernadero";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Invernadero invernadero = new Invernadero();
@@ -112,4 +118,5 @@ public class ManagerInvernadero {
         }
         return invernaderos;
     }
+   
 }

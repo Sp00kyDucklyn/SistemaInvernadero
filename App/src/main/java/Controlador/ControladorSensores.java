@@ -15,7 +15,7 @@ public class ControladorSensores {
     public String getOpcionesSensores() {
         ManagerSensores manager = new ManagerSensores();
         List<Sensor> sensor = manager.obtenerTodosLosSensores();
-        manager.close();
+        
         
         StringBuilder opciones = new StringBuilder();
         for (Sensor sensorito : sensor) {
