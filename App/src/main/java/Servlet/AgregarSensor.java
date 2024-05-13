@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -30,9 +31,9 @@ public class AgregarSensor extends HttpServlet {
         if (verificarConexionDB() && manager.existenInvernaderos()) {
             response.sendRedirect("agregar_sensor.jsp");
         } else {
-            response.setContentType("text/html;charset=UTF-8");
-            response.getWriter().println("<html><body>Condiciones previas no cumplidas. Verifique la conexión a la base de datos y que existan invernaderos.</body></html>");
-        }
+             String mensajeError = "Condiciones previas no cumplidas. Verifique la conexión a la base de datos y que existan invernaderos.";
+            response.sendRedirect("index.html?error=" + URLEncoder.encode(mensajeError, "UTF-8"));
+      }
     }
 
     private boolean verificarConexionDB() {

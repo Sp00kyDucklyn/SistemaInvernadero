@@ -8,7 +8,6 @@ import DominioDatos.Datos;
 import com.invernadero.fachada.Fachada;
 import jakarta.servlet.annotation.WebServlet;
 
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
@@ -22,8 +21,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.List;
-
 
 /**
  *
@@ -33,36 +32,47 @@ import java.util.List;
 public class ObtenerDatos extends HttpServlet {
 
     private Gson gson = new GsonBuilder()
-        .registerTypeAdapter(LocalDateTime.class, new TypeAdapter<LocalDateTime>() {
-            private final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            .registerTypeAdapter(LocalDateTime.class, new TypeAdapter<LocalDateTime>() {
+                private final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-            @Override
-            public void write(JsonWriter out, LocalDateTime value) throws IOException {
-                if (value == null) {
-                    out.nullValue();
-                } else {
-                    out.value(value.format(formatter));
+                @Override
+                public void write(JsonWriter out, LocalDateTime value) throws IOException {
+                    if (value == null) {
+                        out.nullValue();
+                    } else {
+                        out.value(value.format(formatter));
+                    }
                 }
-            }
 
-            @Override
-            public LocalDateTime read(JsonReader in) throws IOException {
-                return LocalDateTime.parse(in.nextString(), formatter);
-            }
-        })
-        .create();
+                @Override
+                public LocalDateTime read(JsonReader in) throws IOException {
+                    return LocalDateTime.parse(in.nextString(), formatter);
+                }
+            })
+            .create();
     Fachada fachada = new Fachada();
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Datos> sensores = fachada.obtenerDatos();
-        String jsonSensores = gson.toJson(sensores);
-        response.setContentType(jsonSensores);
-        PrintWriter out = response.getWriter();
-        out.print(jsonSensores);
-        out.flush();
+
+        try {
+            List<Datos> sensores = fachada.obtenerDatos();
+            if (sensores.isEmpty()) {
+                String mensajeError = "Condiciones previas no cumplidas. Verifique la conexión a la base de datos y que existan DatosDeSensores.";
+                response.sendRedirect("index.html?error=" + URLEncoder.encode(mensajeError, "UTF-8"));
+
+            }
+            String jsonSensores = gson.toJson(sensores);
+            response.setContentType(jsonSensores);
+            PrintWriter out = response.getWriter();
+            out.print(jsonSensores);
+            out.flush();
+        } catch (Exception e) {
+            String mensajeError = "Condiciones previas no cumplidas. Verifique la conexión a la base de datos y que existan DatosDeSensores.";
+            response.sendRedirect("index.html?error=" + URLEncoder.encode(mensajeError, "UTF-8"));
+        }
+
     }
-    
 
 }

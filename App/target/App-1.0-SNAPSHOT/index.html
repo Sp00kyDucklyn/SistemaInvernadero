@@ -59,7 +59,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          Por favor, realiza las operaciones necesarias en el sistema.
+          <!-- This content will be filled dynamically -->
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -73,11 +73,13 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    // Script to trigger modal on page load if needed
     $(document).ready(function() {
-      // This condition is just an example to trigger the modal based on a condition
-      // You might want to replace this with actual logic from your application
-      if (/* condition to show modal */) {
+      const params = new URLSearchParams(window.location.search);
+      const errorMessage = params.get('error'); // Obtiene el mensaje de error de la URL
+
+      if (errorMessage) {
+        // Si hay un mensaje de error, decodificarlo y mostrarlo en el modal
+        $('#alertModal .modal-body').text(decodeURIComponent(errorMessage));
         $('#alertModal').modal('show');
       }
     });
