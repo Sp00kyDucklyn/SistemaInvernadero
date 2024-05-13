@@ -2,7 +2,8 @@ version: '3.8'
 
 services:
   socket-sensores:
-    image: socketsensores
+    build:
+      context: ./socketsensores
     ports:
       - "1544:1544"
     environment:
@@ -13,8 +14,9 @@ services:
     networks:
       - my_network
 
-  Datos_Sensores:
-    image: datossensores
+  datos_sensores:
+    build:
+      context: ./datos_sensores
     ports:
       - "1534:1534"
     environment:
@@ -30,8 +32,9 @@ services:
     networks:
       - my_network
       
-  App:
-    image: app
+  app:
+    build:
+      context: ./app
     ports:
       - "8080:8080"
     environment:
@@ -47,6 +50,38 @@ services:
       - mysql
     networks:
       - my_network
+      
+  detector:
+    build:
+      context: ./detector
+    ports:
+      - "1333:1333"
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3305
+      - MYSQL_DATABASE_DATOSSENSORES=datossensores
+      - MYSQL_DATABASE_INVERNADERO=invernadero
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=12345
+    depends_on:
+      - rabbitmq
+      - mysql
+    networks:
+      - my_network  
+
+  sistemamensajeria:
+    build:
+      context: ./sistemamensajeria
+    ports:
+      - "1322:1322"
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - rabbitmq
+      - mysql
+    networks:
+      - my_network  
 
   rabbitmq:
     image: rabbitmq:latest
@@ -68,7 +103,7 @@ services:
     networks:
       - my_network
     volumes:
-      - ./mysql-initdb.d:/docker-entrypoint-initdb.d
+      - ./mysql-initdb:/docker-entrypoint-initdb.d
 
 networks:
   my_network:
