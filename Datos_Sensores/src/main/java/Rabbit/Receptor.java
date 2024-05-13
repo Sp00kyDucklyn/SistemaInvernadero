@@ -38,7 +38,7 @@ public class Receptor {
                 
                 String message= new String(delivery.getBody(), "UTF-8");
                 System.out.println("Llego Mensaje "+message);
-                DatosDAO datosDAO = new DatosDAO("mysql", "3306", "DatosSensores", "root", "12345");
+                DatosDAO datosDAO = new DatosDAO("mysql", "3306", "datossensores", "root", "12345");
                 Datos datos = new Datos();
                 String[] atributos=message.split(":");
                 datos.setIdSensor(atributos[0]);

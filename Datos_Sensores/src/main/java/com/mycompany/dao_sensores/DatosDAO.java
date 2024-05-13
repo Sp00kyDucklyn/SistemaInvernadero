@@ -49,7 +49,7 @@ public class DatosDAO implements IDatos {
     public Datos agregarDatos(Datos datos) {
         try (Connection connection = conexion()) {
             String query = """
-                        INSERT INTO Datos (idSensor, tipo_sensor, medida_humedad, medida_temperatura, fecha_hora, marca_sensor) 
+                        INSERT INTO datos (idSensor, tipo_sensor, medida_humedad, medida_temperatura, fecha_hora, marca_sensor) 
                         VALUES (?, ?, ?, ?, ?, ?);""";
             try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1, datos.getIdSensor());
@@ -79,7 +79,7 @@ public class DatosDAO implements IDatos {
     public List<Datos> obtenerDatos() {
         List<Datos> datosList = new ArrayList<>();
         try (Connection connection = conexion()) {
-            String query = "SELECT * FROM Datos";
+            String query = "SELECT * FROM datos";
             try (PreparedStatement ps = connection.prepareStatement(query)) {
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
@@ -105,7 +105,7 @@ public class DatosDAO implements IDatos {
     public List<Datos> obtenerDatosPorIdSensor(String idSensor) {
         List<Datos> datosList = new ArrayList<>();
         try (Connection connection = conexion()) {
-            String query = "SELECT * FROM Datos WHERE idSensor = ?";
+            String query = "SELECT * FROM datos WHERE idSensor = ?";
             try (PreparedStatement ps = connection.prepareStatement(query)) {
                 ps.setString(1, idSensor);
                 try (ResultSet rs = ps.executeQuery()) {
@@ -125,7 +125,7 @@ public class DatosDAO implements IDatos {
     public List<Datos> obtenerDatosPorPeriodo(LocalDateTime fechaInicio, LocalDateTime fechaFin) {
         List<Datos> datosList = new ArrayList<>();
         try (Connection connection = conexion()) {
-            String query = "SELECT * FROM Datos WHERE fecha_hora BETWEEN ? AND ?";
+            String query = "SELECT * FROM datos WHERE fecha_hora BETWEEN ? AND ?";
             try (PreparedStatement ps = connection.prepareStatement(query)) {
                 ps.setObject(1, fechaInicio);
                 ps.setObject(2, fechaFin);
