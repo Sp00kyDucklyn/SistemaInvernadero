@@ -1,0 +1,21 @@
+# Use OpenJDK 20 for both build and runtime stages
+FROM openjdk:20-slim as build
+WORKDIR /app
+COPY pom.xml .
+COPY src/main/resources/lib/Fachada-1.0-SNAPSHOT.jar /root/.m2/repository/com/invernadero/Fachada/1.0-SNAPSHOT/Fachada-1.0-SNAPSHOT.jar
+RUN apt-get update && apt-get install -y maven
+RUN mvn dependency:go-offline
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+FROM openjdk:20-slim
+WORKDIR /opt
+ADD https://archive.apache.org/dist/tomee/tomee-9.1.2/apache-tomee-9.1.2-plus.tar.gz /opt/
+RUN tar -xzf apache-tomee-9.1.2-plus.tar.gz && \
+    mv apache-tomee-plus-9.1.2 tomee && \
+    rm apache-tomee-9.1.2-plus.tar.gz
+COPY --from=build /app/target/*.war /opt/tomee/webapps/App.war
+EXPOSE 8080
+WORKDIR /opt/tomee/bin
+RUN chmod +x catalina.sh
+CMD ["./catalina.sh", "run"]
