@@ -5,6 +5,7 @@
 package Servlet;
 
 import Controlador.ManagerAlarma;
+import Controlador.ManagerInvernadero;
 import Controlador.ManagerSensores;
 import dominio.Alarma;
 
@@ -15,6 +16,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  *
@@ -40,7 +44,7 @@ public class AgregarAlarma extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AgregarAlarma</title>");            
+            out.println("<title>Servlet AgregarAlarma</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet AgregarAlarma at " + request.getContextPath() + "</h1>");
@@ -59,11 +63,22 @@ public class AgregarAlarma extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ManagerSensores manager = new ManagerSensores();
+        if (verificarConexionDB() && manager.existenSensor()) {
+            response.sendRedirect("agregar_alarma.jsp");
+        } else {
+            response.setContentType("text/html;charset=UTF-8");
+            response.getWriter().println("<html><body>Condiciones previas no cumplidas. Verifique la conexión a la base de datos y que existan sensores.</body></html>");
+        }
+    }   
+    private boolean verificarConexionDB() {
+    try (Connection conn = DriverManager.getConnection("jdbc:mysql://mysql:3306/invernadero", "root", "12345")) {
+        return true;
+    } catch (SQLException e) {
+        return false;
     }
-
+}
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -75,7 +90,7 @@ public class AgregarAlarma extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         double temperatura = Double.parseDouble(request.getParameter("limite_temperatura"));
         double humedad = Double.parseDouble(request.getParameter("limite_humedad"));
         long sensor = Long.parseLong(request.getParameter("sensor_id"));
@@ -85,8 +100,7 @@ public class AgregarAlarma extends HttpServlet {
 
         // Crear el EntityManagerFactory y EntityManager
         ManagerAlarma manager = new ManagerAlarma();
-        manager.agregarAlarmaYActualizarSensor(alarma,sensor);
-       
+        manager.agregarAlarmaYActualizarSensor(alarma, sensor);
 
         // Redirigir de vuelta al menú principal
         response.sendRedirect("index.html");
