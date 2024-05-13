@@ -46,7 +46,7 @@ public class Entrada implements Runnable {
                 colitas.enviarNotificacionSensor(inputLine, "key1");
 
                 // Envía el mensaje a la segunda cola con clave "clave2"
-                colitas.enviarNotificacionSensor(inputLine, "key2");
+//                colitas.enviarNotificacionSensor(inputLine, "key2");
             }
 
             //out.close();

@@ -22,6 +22,8 @@ CREATE TABLE sensor (
     FOREIGN KEY (id_alarma) REFERENCES alarma(id_alarma)
 );
 
+DELIMITER //
+
 CREATE PROCEDURE agregar_alarma_y_actualizar_sensor(
     IN p_limite_humedad DOUBLE,
     IN p_limite_temperatura DOUBLE,
@@ -30,16 +32,17 @@ CREATE PROCEDURE agregar_alarma_y_actualizar_sensor(
 BEGIN
     -- Agregar la nueva alarma
     INSERT INTO alarma (limite_humedad, limite_temperatura)
-    VALUES (p_limite_humedad, p_limite_temperatura)
-    
+    VALUES (p_limite_humedad, p_limite_temperatura);
+
     -- Obtener el ID de la alarma recién agregada
-    SET @last_alarm_id = LAST_INSERT_ID()
-    
+    SET @last_alarm_id = LAST_INSERT_ID();
+
     -- Actualizar el sensor con el ID de la nueva alarma
-    UPDATE sensor SET id_alarma = @last_alarm_id WHERE id_sensor = p_id_sensor
+    UPDATE sensor SET id_alarma = @last_alarm_id WHERE id_sensor = p_id_sensor;
 END//
 
 DELIMITER ;
+
 
 INSERT INTO invernadero (direccion, nombre) VALUES
 ('Calle Falsa 123', 'Invernadero A'),
@@ -57,3 +60,17 @@ INSERT INTO sensor (clave_sensor, marca, id_invernadero, id_alarma) VALUES
 ('ABC123', 'SensorX', 1, 1),
 ('DEF456', 'SensorY', 2, 2),
 ('GHI789', 'SensorZ', 3, 3);
+
+create database datossensores;
+use datossensores;
+
+create table datos(
+id int auto_increment primary key,
+idSensor Varchar(255) not null,
+tipo_sensor VARCHAR(50) NOT NULL,
+medida_humedad DECIMAL(5,2) NOT NULL,
+medida_temperatura DECIMAL(5,2) NOT NULL,
+fecha_hora DATETIME NOT NULL,
+marca_sensor VARCHAR(100) NOT NULL
+);
+select * from datos;

@@ -27,9 +27,9 @@ public class Prueba {
         Socket socket = new Socket("localhost", 1544);
          
             // El string que quieres enviar en binario
-              String mensaje = "33:opo:111:111";
+//              String mensaje = "33:opo:111:111";
 //            String mensaje = "ABC123:SensorX:221:221:nombre:direccion";
-//            String mensaje1 = "ABC123:SensorX:233:233";
+            String mensaje = "ABC123:SensorX:233:233";
 //            String mensaje2 = "ABC123:SensorX:444:44";
 //            String mensaje3 = "ABC123:SensorX:233:33";
 //            String mensaje4 = "ABC123:SensorX:55:55";
