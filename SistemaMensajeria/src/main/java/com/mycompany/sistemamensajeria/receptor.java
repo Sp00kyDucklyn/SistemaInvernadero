@@ -23,6 +23,9 @@ public class receptor {
      * @param args the command line arguments
      */
     static String QUEUE_NAME = "ListaCompra";
+    private static final String USERNAME = "admin";
+    private static final String RABBITMQ_HOST = "rabbitmq";
+    private static final String PASSWORD = "password";
 
     public static void main(String[] args) {
 
@@ -30,7 +33,9 @@ public class receptor {
 
             ConnectionFactory factory = new ConnectionFactory();
 
-            factory.setHost("localhost");
+            factory.setUsername(USERNAME);
+            factory.setPassword(PASSWORD);
+            factory.setHost(RABBITMQ_HOST);
 
             Connection connection = factory.newConnection();
 

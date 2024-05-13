@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 /**
  *
  * @author oscar
+ * 
  */
 public class Receptor {
      private static final String EXCHANGE_NAME="colaDatos";
@@ -29,13 +30,13 @@ public class Receptor {
         try{
             Connection connection= factory.newConnection();
             Channel channel=connection.createChannel();
-            channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+            channel.exchangeDeclare(EXCHANGE_NAME, "fanout");        
+            channel.queueDeclare(EXCHANGE_NAME, false, false, false, null);
             String prueba = channel.queueDeclare().getQueue();
             channel.queueBind(prueba, EXCHANGE_NAME, ROUTING_KEY);
             System.out.println(" [*] Esperando mensajes en"+ EXCHANGE_NAME +"Para salir, presion CRTL+C");
             
-            DeliverCallback deliverCallback= (consumerTag, delivery) ->{
-                
+            DeliverCallback deliverCallback= (consumerTag, delivery) ->{      
                 String message= new String(delivery.getBody(), "UTF-8");
                 System.out.println("Llego Mensaje "+message);
                 DatosDAO datosDAO = new DatosDAO("mysql", "3306", "datossensores", "root", "12345");

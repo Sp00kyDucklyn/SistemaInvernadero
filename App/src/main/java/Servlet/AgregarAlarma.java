@@ -16,6 +16,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -68,9 +69,10 @@ public class AgregarAlarma extends HttpServlet {
         if (verificarConexionDB() && manager.existenSensor()) {
             response.sendRedirect("agregar_alarma.jsp");
         } else {
-            response.setContentType("text/html;charset=UTF-8");
-            response.getWriter().println("<html><body>Condiciones previas no cumplidas. Verifique la conexión a la base de datos y que existan sensores.</body></html>");
-        }
+             String mensajeError = "Condiciones previas no cumplidas. Verifique la conexión a la base de datos y que existan Sensores.";
+            response.sendRedirect("index.html?error=" + URLEncoder.encode(mensajeError, "UTF-8"));
+            
+            }
     }   
     private boolean verificarConexionDB() {
     try (Connection conn = DriverManager.getConnection("jdbc:mysql://mysql:3306/invernadero", "root", "12345")) {

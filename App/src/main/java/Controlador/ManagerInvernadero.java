@@ -45,6 +45,7 @@ public class ManagerInvernadero {
         }
     }
     
+    
     public void actualizarInvernadero(Invernadero invernadero) {
         String query = "UPDATE invernadero SET direccion = ?, nombre = ? WHERE id_invernadero = ?";
         try (Connection connection = getConnection();

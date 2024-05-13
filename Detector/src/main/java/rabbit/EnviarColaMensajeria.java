@@ -26,16 +26,21 @@ import java.util.logging.Logger;
  */
 public class EnviarColaMensajeria {
     static String QUEUE_NAME = "ListaCompra";
+    private static final String USERNAME = "admin";
+    private static final String RABBITMQ_HOST = "rabbitmq";
+    private static final String PASSWORD = "password";
     private Channel channel;
     
     public EnviarColaMensajeria() {
         ConnectionFactory factory = new ConnectionFactory();
-
-        factory.setHost("localhost");
-        
+        factory.setUsername(USERNAME);
+        factory.setPassword(PASSWORD);
+        factory.setHost(RABBITMQ_HOST); 
          try {
+             System.out.println("ola");
              Connection connection = (Connection) factory.newConnection();
               channel = connection.createChannel();
+              System.out.println("ola");
          } catch (IOException ex) {
              Logger.getLogger(EnviarColaMensajeria.class.getName()).log(Level.SEVERE, null, ex);
          } catch (TimeoutException ex) {

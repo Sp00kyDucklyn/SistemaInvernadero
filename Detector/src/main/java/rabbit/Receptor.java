@@ -11,6 +11,7 @@ import java.io.IOException;
 /**
  *
  * @author diego
+ * 
  */
 public class Receptor {
 
@@ -21,18 +22,18 @@ public class Receptor {
     private static final String PASSWORD = "password";
     public static void main(String[] args) throws Exception {
         ConnectionFactory factory=new ConnectionFactory();
-        factory.setHost("localhost");
+        factory.setHost(RABBITMQ_HOST);
+        factory.setUsername(USERNAME);
+        factory.setPassword(PASSWORD);
        
         try{
             Connection connection= factory.newConnection();
             Channel channel=connection.createChannel();
-            channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+            channel.exchangeDeclare(EXCHANGE_NAME, "fanout");        
             channel.queueDeclare(EXCHANGE_NAME, false, false, false, null);
             String prueba = channel.queueDeclare().getQueue();
             channel.queueBind(prueba, EXCHANGE_NAME, ROUTING_KEY);
-            channel.queueBind(EXCHANGE_NAME, "colaDatos", ROUTING_KEY); // Vincular la cola al exchange con la clave de enrutamiento
-
-            System.out.println(" [*] Esperando mensajes en "+ EXCHANGE_NAME +". Para salir, presiona CTRL+C");
+            System.out.println(" [*] Esperando mensajes en"+ EXCHANGE_NAME +"Para salir, presion CRTL+C");
 
             DeliverCallback deliverCallback= (consumerTag, delivery) ->{
                 String message= new String(delivery.getBody(), "UTF-8");
@@ -42,7 +43,7 @@ public class Receptor {
             };
 
             // Consumir mensajes de la cola
-            channel.basicConsume(EXCHANGE_NAME, true, deliverCallback, consumerTag -> { });
+            channel.basicConsume(prueba, true, deliverCallback, consumerTag -> { });
 
         } catch(Exception e){
             System.out.println("Exception: " + e);

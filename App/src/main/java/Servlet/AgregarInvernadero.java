@@ -15,6 +15,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  *
@@ -63,10 +67,22 @@ public class AgregarInvernadero extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
+    private boolean verificarConexionDB() {
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://mysql:3306/invernadero", "root", "12345")) {
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // Obtener los parámetros del formulario
+        
+        
+        if (!verificarConexionDB()) {
+            String mensajeError = "Condiciones previas no cumplidas. Verifique la conexión a la base de datos y que existan invernaderos.";
+            response.sendRedirect("index.html?error=" + URLEncoder.encode(mensajeError, "UTF-8"));
+        }
         String direccion = request.getParameter("direccion");
         String nombre = request.getParameter("nombre");
 
