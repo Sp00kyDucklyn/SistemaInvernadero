@@ -3,11 +3,15 @@ package com.invernadero.ApiExterna.Controlador;
 import DominioDatos.Datos;
 import com.invernadero.fachadadatosexternos.FachadaDatosExternos;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
+
 /**
  *
  * @author Jorge
@@ -29,9 +33,10 @@ public class DatosExternos {
         return ResponseEntity.ok(fachadaExterna.obtenerDatosPorIdSensor(idSensor));
     }
 
-//    @GetMapping("/datos-externos")
-//    public ResponseEntity<?> ObtenerDatosPorPeriodo(){
-//        return ResponseEntity.ok(fachadaExterna.obtenerDatosPorPeriodo());
-//    }
+    @GetMapping("/datos-externos/{fechaInicio}/{fechaFin}")
+    public ResponseEntity<?> ObtenerDatosPorPeriodo(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
+                                                    @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin){
+        return ResponseEntity.ok(fachadaExterna.obtenerDatosPorPeriodo(fechaInicio, fechaFin));
+    }
     
 }
