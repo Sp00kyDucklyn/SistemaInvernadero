@@ -36,6 +36,7 @@ public class DatosDAO implements IDatos {
     }
 
     private Connection conexion() throws SQLException {
+        System.out.println(url);
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 

@@ -1,0 +1,17 @@
+# Usar una imagen base oficial de Java
+FROM openjdk:21-slim
+
+# Opcional: Establecer la zona horaria
+ENV TZ=America/New_York
+
+# Directorio de trabajo dentro del contenedor
+WORKDIR /app
+
+# Copiar el archivo JAR construido previamente al directorio de trabajo
+COPY target/ApiExterna-0.0.1-SNAPSHOT.jar /app/ApiExterna.jar
+
+# Explicar qué puerto será expuesto por el contenedor
+EXPOSE 8081
+
+# Comando para ejecutar la aplicación
+CMD ["java", "-jar", "ApiExterna.jar"]
